@@ -1,0 +1,16 @@
+{
+  "name": "regex-presentation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "mdx-deck deck.mdx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gatsby-source-filesystem": "^2.1.48",
+    "mdx-deck": "^4.1.0"
+  }
+}
