@@ -1,15 +1,18 @@
 import myTheme from './theme'
 import Wrapper from './components/Wrapper'
 import RegexCompare from './components/RegexCompare'
+import StyledLink from './components/StyledLink'
+import {CodeColorStyle} from './components/Styles'
 
 export const theme = myTheme
 
 # Regular Expressions
+
 ---
 
 <Wrapper>
 
-## Definition:
+## Definition
 
 A regular expression, regex or regexp (sometimes called a rational expression) is a sequence of characters that define a search pattern.
 
@@ -28,8 +31,13 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Any character matches to it's current value
 
-- The exception characters to this rule are <span style={{color: '#FFCB33'}}>`[\^$.|?*+()`</span>
+- The exception characters to this rule are <CodeColorStyle>`[\^$.|?*+()`</CodeColorStyle> 
 
+- Case sensitivity matters, unless there is a flag specified
+
+- Example:
+  - 
+  - asdads
 <RegexCompare text={"adsa"} pattern={""}/>
 
 </Wrapper>
@@ -37,6 +45,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 ---
 
 ### Useful Sites
-- https://www.regular-expressions.info/
-- https://regex101.com/
-- https://regexr.com/
+
+- <StyledLink link="https://www.regular-expressions.info"/>
+- <StyledLink link="https://regex101.com/"/>
+- <StyledLink link="https://regexr.com/"/>

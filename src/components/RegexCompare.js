@@ -45,7 +45,7 @@ RegexCompare.propTypes = {
 
 const Input = styled.input`
   all: unset;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.9);
   border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 3px;
   padding: 5px;

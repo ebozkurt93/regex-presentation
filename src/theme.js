@@ -2,7 +2,7 @@ export default {
   googleFont:
     'https://fonts.googleapis.com/css?family=Fira+Mono|Lato&display=swap',
   fonts: {
-    body: '"Lato", sans-serif',
+    body: 'Lato, sans-serif',
     monospace: '"Fira Mono", monospace'
   },
   colors: {
