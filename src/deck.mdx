@@ -26,12 +26,11 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 <Wrapper>
 
-
 ## Literal character
 
 - Any character matches to it's current value
 
-- The exception characters to this rule are <CodeColorStyle>`[\^$.|?*+()`</CodeColorStyle> 
+- The exception characters to this rule are <CodeColorStyle>[\^$.|?*+()</CodeColorStyle> 
 
 - Case sensitivity matters, unless there is a flag specified
 
@@ -39,6 +38,110 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
   - 
   - asdads
 <RegexCompare text={"adsa"} pattern={""}/>
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Non printable characters
+
+- <CodeColorStyle>\t</CodeColorStyle> for tabs
+- <CodeColorStyle>\r</CodeColorStyle> for carriage return
+- <CodeColorStyle>\n</CodeColorStyle> for line feed (new line)
+- Others:
+  - <CodeColorStyle>\a&nbsp;&nbsp;\e&nbsp;&nbsp;\f&nbsp;&nbsp;\v</CodeColorStyle>
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Character classes/sets
+
+- Any character inside the braces will match
+  - <CodeColorStyle>[ae]</CodeColorStyle> gray grey
+- To specify a range of characters, use hyphen character (<CodeColorStyle>-</CodeColorStyle>)
+  - <CodeColorStyle>[0-9]</CodeColorStyle> will match any single digit between 0 and 9
+- You can specify more than a single range inside the braces
+  - <CodeColorStyle>[0-9a-fA-F]</CodeColorStyle>
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Character classes/sets (2)
+
+- <CodeColorStyle>^</CodeColorStyle> character inside the brackets negates the expression.
+
+  - abcd [ac]
+
+</Wrapper>
+
+---
+
+
+<Wrapper>
+
+## Shorthand character classes
+
+- <CodeColorStyle>\w</CodeColorStyle> will match any <i>word</i> character
+
+  - Equal to <CodeColorStyle>[a-zA-Z0-9_]</CodeColorStyle>
+
+- <CodeColorStyle>\d</CodeColorStyle> will match any <i>digit</i>
+
+  - Equal to <CodeColorStyle>[0-9]</CodeColorStyle>
+
+- <CodeColorStyle>\s</CodeColorStyle> will match any <i>whitespace</i> character
+
+  - Including tabs and line breaks
+
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Shorthand character classes (2)
+
+- <CodeColorStyle>\W</CodeColorStyle> will match any <i> non word</i> character
+
+  - Equal to <CodeColorStyle>[</CodeColorStyle><CodeColorStyle>^a-zA-Z0-9_]</CodeColorStyle>
+
+- <CodeColorStyle>\D</CodeColorStyle> will match any <i> non digit</i>
+
+  - Equal to <CodeColorStyle>[</CodeColorStyle><CodeColorStyle>^0-9]</CodeColorStyle>
+
+- <CodeColorStyle>\S</CodeColorStyle> will match any <i>non whitespace</i> character
+
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Wildcard operator
+
+- <CodeColorStyle>.</CodeColorStyle> will match any character, except line break characters
+
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Anchors
+
+- ^ $ \b
+
 
 </Wrapper>
 
