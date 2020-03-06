@@ -140,15 +140,88 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 ## Anchors
 
-- ^ $ \b
+- <CodeColorStyle>^</CodeColorStyle> will mark <i>beginning</i> of the search string
+- <CodeColorStyle>$</CodeColorStyle> will mark <i>ending</i> of the search string
+- <CodeColorStyle>\b</CodeColorStyle> will match at <i>word boundaries</i>
 
 
 </Wrapper>
 
 ---
 
+<Wrapper>
+
+## Alternation
+
+- Or operator for regular expressions
+- Same symbol as in binary or operation in most programming languages (<CodeColorStyle>|</CodeColorStyle>)
+
+
+</Wrapper>
+
+
+---
+
+<Wrapper>
+
+## Repetition
+
+- For making the previous token optional (0 or 1 repeat), use <CodeColorStyle>?</CodeColorStyle>
+- For making the previous token repeat 0 or more times, use <CodeColorStyle>*</CodeColorStyle>
+- For making the previous token repeat 1 or more times, use <CodeColorStyle>+</CodeColorStyle>
+- For custom repeat count, use <CodeColorStyle>{}</CodeColorStyle>
+  - {2}
+  - {2, 5}
+
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Greedy and Lazy Repetition
+
+- Regular expressions are greedy by default
+- To make a quantifier lazy, add <CodeColorStyle>?</CodeColorStyle> after quantifier
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Grouping and Capture Groups
+
+- Adding <CodeColorStyle>()</CodeColorStyle> around multiple tokens group them together
+  - This is called capture group
+  - You can apply a quantifier to the group
+  - Regex groups are indexed by 0, but the 0th group contains entire matched content
+- If you need a group, but do not need to capture it, add <CodeColorStyle>?:</CodeColorStyle> as the first 2 characters inside the paranthesis
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Backreferences
+
+- Within a regular expression it is possible to search & use a previously captured value in the same expression
+
+- 
+
+question idea -> Convert x = x + 1 y = y * 5 to x += 1 ...
+
+</Wrapper>
+
+
+
+---
+
 ### Useful Sites
 
 - <StyledLink link="https://www.regular-expressions.info"/>
-- <StyledLink link="https://regex101.com/"/>
-- <StyledLink link="https://regexr.com/"/>
+- <StyledLink link="https://regex101.com"/>
+- <StyledLink link="https://regexr.com"/>
+- <StyledLink link="https://www.debuggex.com"/>

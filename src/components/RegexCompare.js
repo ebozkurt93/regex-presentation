@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 export default function RegexCompare({ text, pattern, answer }) {
+  const inputFocusNotAllowedKeys = new Set([
+    'ArrowLeft',
+    'ArrowRight',
+    'ArrowUp',
+    'ArrowDown'
+  ]);
+  const inputFocusDisableKeys = new Set(['Escape', 'Tab']);
+
   const [currentPattern, setCurrentPattern] = useState(pattern);
   const isPatternMatchingText = (text, pattern) => {
     try {
@@ -18,6 +26,14 @@ export default function RegexCompare({ text, pattern, answer }) {
     isPatternMatchingText(text, pattern)
   );
 
+  const handleKeyDown = e => {
+    if (inputFocusDisableKeys.has(e.key)) {
+      e.target.blur();
+    } else if (inputFocusNotAllowedKeys.has(e.key)) {
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+    }
+  };
   const handleChange = e => {
     setCurrentPattern(e.target.value);
     setCorrectAnswer(isPatternMatchingText(text, e.target.value));
@@ -28,6 +44,7 @@ export default function RegexCompare({ text, pattern, answer }) {
       <Input
         type="text"
         name="pattern"
+        onKeyDown={handleKeyDown}
         onChange={handleChange}
         value={currentPattern}
         placeholder="pattern"
