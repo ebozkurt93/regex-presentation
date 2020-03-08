@@ -215,7 +215,45 @@ question idea -> Convert x = x + 1 y = y * 5 to x += 1 ...
 
 </Wrapper>
 
+---
 
+<Wrapper>
+
+## Named groups & Backreferences
+
+- We can name capture groups and reference them by their name
+- This is especially useful when you have many capture groups
+- To name a group add <CodeColorStyle>?<groupName\></CodeColorStyle> at the beginning of the capture group.
+  - (?<myGroup\>[abc]+)
+- To backreference the group syntax is like <CodeColorStyle>\k<groupName\></CodeColorStyle>
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Lookaround groups (Lookahead & Lookbehind)
+
+
+- There are 2 types of lookahead:
+  - Positive lookahead: Match a token which continues with another token
+    - u(?=c)
+    duck dump
+    Lookahead lookbehind
+  - Negative lookahead: Match a token which does not continue with another token
+    - a(?!d)
+    Lookahead
+- There are 2 types of lookbehind:
+  - Positive lookbehind: Match a token which begins with another token
+    - (?<=a)b
+  - Negative lookbehind: Match a token which does not begin with another token
+    - (?<!a)b
+- While using lookahead and lookbehind content inside the lookahead/lookbehind will be discarded.
+  - If you want to store the match for the lookahead/lookbehind, you can use a capture group
+
+
+</Wrapper>
 
 ---
 
