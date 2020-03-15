@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export default function RegexCompare({ text, pattern }) {
+export default function RegexCompare({ texts, pattern }) {
   const inputFocusNotAllowedKeys = new Set([
     'ArrowLeft',
     'ArrowRight',
@@ -12,12 +12,13 @@ export default function RegexCompare({ text, pattern }) {
   const inputFocusDisableKeys = new Set(['Escape', 'Tab']);
 
   const [currentPattern, setCurrentPattern] = useState(pattern);
-  const [highlightedText, setHighlightedText] = useState(text);
+  const [highlightedTexts, setHighlightedTexts] = useState(texts);
+
   const isPatternMatchingText = (text, pattern) => {
     try {
       new RegExp(pattern, 'g');
     } catch (error) {
-      return false;
+      return [false, text];
     }
     var re = new RegExp(pattern, 'g');
 
@@ -25,7 +26,9 @@ export default function RegexCompare({ text, pattern }) {
     var highlightedTextContent = [];
     var prevStartIndex = 0;
     var prevEndIndex = 0;
+    var res = false;
     while (pattern.length > 0 && pattern !== '()' && (match = re.exec(text))) {
+      console.log(match);
       highlightedTextContent.push(text.substring(prevEndIndex, match.index));
       prevStartIndex = match.index;
       prevEndIndex = match.index + match[0].length;
@@ -37,7 +40,6 @@ export default function RegexCompare({ text, pattern }) {
           {text.substring(prevStartIndex, prevEndIndex)}
         </span>
       );
-      var res = false;
       if (match[0] === text) {
         highlightedTextContent = [
           <span
@@ -60,14 +62,28 @@ export default function RegexCompare({ text, pattern }) {
         </span>
       );
     }
-    setHighlightedText(highlightedTextContent);
-    return res;
+    return [res, highlightedTextContent];
   };
 
   const [correctAnswer, setCorrectAnswer] = useState(false);
 
+  const UpdateUi = pattern => {
+    var result = true;
+    texts.forEach((text, i) => {
+      const [isCorrectAnswer, highlightedTextContent] = isPatternMatchingText(
+        text,
+        pattern
+      );
+      var tempHighlightedTextContent = highlightedTexts;
+      tempHighlightedTextContent[i] = highlightedTextContent;
+      setHighlightedTexts(tempHighlightedTextContent);
+      result = result && isCorrectAnswer;
+    });
+    setCorrectAnswer(result);
+  };
+
   useEffect(() => {
-    setCorrectAnswer(isPatternMatchingText(text, pattern));
+    UpdateUi('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,14 +98,20 @@ export default function RegexCompare({ text, pattern }) {
 
   const handleChange = e => {
     setCurrentPattern(e.target.value);
-    setCorrectAnswer(isPatternMatchingText(text, e.target.value));
+    UpdateUi(e.target.value);
   };
 
   return (
     <div>
-      <p>
-        Searching for: <b>{highlightedText}</b>
-      </p>
+      <span>
+        Searching for:
+        <br />
+        <ul>
+          {highlightedTexts.map((ht, i) => (
+            <li key={i}>{ht}</li>
+          ))}
+        </ul>
+      </span>
       <Input
         type="text"
         name="pattern"
@@ -104,7 +126,7 @@ export default function RegexCompare({ text, pattern }) {
 }
 
 RegexCompare.propTypes = {
-  text: PropTypes.string.isRequired,
+  texts: PropTypes.arrayOf(PropTypes.string).isRequired,
   pattern: PropTypes.string
 };
 
