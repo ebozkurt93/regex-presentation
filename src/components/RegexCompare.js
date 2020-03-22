@@ -125,7 +125,7 @@ export default function RegexCompare({
 
   const hasUnmatchedTexts = shouldNotMatchHighlightedTexts.length > 0;
   return (
-    <div>
+    <Wrapper>
       <div
         style={
           hasUnmatchedTexts
@@ -174,6 +174,17 @@ export default function RegexCompare({
           placeholder="pattern"
         />
         {correctAnswer ? '✅' : '❌'}
+        {
+          <span
+            onClick={() => {
+              setCurrentPattern(pattern);
+              UpdateUi(pattern);
+            }}
+            style={{ cursor: 'pointer', marginLeft: '20px' }}
+          >
+            🔄
+          </span>
+        }
         {answerPattern && (
           <span>
             &nbsp;
@@ -189,7 +200,7 @@ export default function RegexCompare({
           </span>
         )}
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
@@ -199,6 +210,13 @@ RegexCompare.propTypes = {
   pattern: PropTypes.string,
   answerPattern: PropTypes.string
 };
+
+const Wrapper = styled.div`
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 5px;
+  width: auto;
+`;
 
 const Input = styled.input`
   all: unset;
