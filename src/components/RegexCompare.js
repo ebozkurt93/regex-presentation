@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export default function RegexCompare({ texts, pattern = '' }) {
+export default function RegexCompare({
+  texts,
+  pattern = '',
+  answerPattern = null
+}) {
   const inputFocusNotAllowedKeys = new Set([
     'ArrowLeft',
     'ArrowRight',
@@ -127,13 +131,28 @@ export default function RegexCompare({ texts, pattern = '' }) {
         placeholder="pattern"
       />
       {correctAnswer ? '✅' : '❌'}
+      {answerPattern && (
+        <span>
+          &nbsp;
+          <span
+            onClick={() => {
+              setCurrentPattern(answerPattern);
+              UpdateUi(answerPattern);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            ❓
+          </span>
+        </span>
+      )}
     </div>
   );
 }
 
 RegexCompare.propTypes = {
   texts: PropTypes.arrayOf(PropTypes.string).isRequired,
-  pattern: PropTypes.string
+  pattern: PropTypes.string,
+  answerPattern: PropTypes.string
 };
 
 const Input = styled.input`
