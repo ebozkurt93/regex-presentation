@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export default function RegexCompare({
   texts,
+  shouldNotMatchTexts = [],
   pattern = '',
   answerPattern = null
 }) {
@@ -18,6 +19,10 @@ export default function RegexCompare({
 
   const [currentPattern, setCurrentPattern] = useState(pattern);
   const [highlightedTexts, setHighlightedTexts] = useState(texts);
+  const [
+    shouldNotMatchHighlightedTexts,
+    setShouldNotMatchHighlightedTexts
+  ] = useState(shouldNotMatchTexts);
 
   const isPatternMatchingText = (text, pattern) => {
     try {
@@ -86,6 +91,16 @@ export default function RegexCompare({
       setHighlightedTexts(tempHighlightedTextContent);
       result = result && isCorrectAnswer;
     });
+    shouldNotMatchTexts.forEach((text, i) => {
+      const [isCorrectAnswer, highlightedTextContent] = isPatternMatchingText(
+        text,
+        pattern
+      );
+      var tempHighlightedTextContent = shouldNotMatchHighlightedTexts;
+      tempHighlightedTextContent[i] = highlightedTextContent;
+      setShouldNotMatchHighlightedTexts(tempHighlightedTextContent);
+      result = result && !isCorrectAnswer;
+    });
     setCorrectAnswer(result);
   };
 
@@ -108,49 +123,79 @@ export default function RegexCompare({
     UpdateUi(e.target.value);
   };
 
+  const hasUnmatchedTexts = shouldNotMatchHighlightedTexts.length > 0;
   return (
     <div>
-      <span>
-        Searching for:
-        <br />
-        <ul>
-          {highlightedTexts.map((ht, i) => (
-            <li key={i}>
-              {/* Using pre tag here, since markdown deletes extra spaces */}
-              <Text>{ht}</Text>
-            </li>
-          ))}
-        </ul>
-      </span>
-      <Input
-        type="text"
-        name="pattern"
-        onKeyDown={handleKeyDown}
-        onChange={handleChange}
-        value={currentPattern}
-        placeholder="pattern"
-      />
-      {correctAnswer ? '✅' : '❌'}
-      {answerPattern && (
-        <span>
-          &nbsp;
-          <span
-            onClick={() => {
-              setCurrentPattern(answerPattern);
-              UpdateUi(answerPattern);
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            ❓
+      <div
+        style={
+          hasUnmatchedTexts
+            ? { display: 'flex', justifyContent: 'space-around' }
+            : {}
+        }
+      >
+        <div>
+          Match:
+          <br />
+          <ul>
+            {highlightedTexts.map((ht, i) => (
+              <li key={i}>
+                {/* Using pre tag here, since markdown deletes extra spaces */}
+                <Text>{ht}</Text>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {hasUnmatchedTexts && (
+          <div>
+            Do not match:
+            <br />
+            <ul>
+              {shouldNotMatchHighlightedTexts.map((ht, i) => (
+                <li key={i}>
+                  {/* Using pre tag here, since markdown deletes extra spaces */}
+                  <Text>{ht}</Text>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <div
+        style={
+          hasUnmatchedTexts ? { display: 'flex', justifyContent: 'center' } : {}
+        }
+      >
+        <Input
+          type="text"
+          name="pattern"
+          onKeyDown={handleKeyDown}
+          onChange={handleChange}
+          value={currentPattern}
+          placeholder="pattern"
+        />
+        {correctAnswer ? '✅' : '❌'}
+        {answerPattern && (
+          <span>
+            &nbsp;
+            <span
+              onClick={() => {
+                setCurrentPattern(answerPattern);
+                UpdateUi(answerPattern);
+              }}
+              style={{ cursor: 'pointer' }}
+            >
+              ❓
+            </span>
           </span>
-        </span>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 
 RegexCompare.propTypes = {
   texts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  shouldNotMatchTexts: PropTypes.arrayOf(PropTypes.string),
   pattern: PropTypes.string,
   answerPattern: PropTypes.string
 };

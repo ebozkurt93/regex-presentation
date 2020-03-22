@@ -77,7 +77,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - <CodeColorStyle>^</CodeColorStyle> character inside the brackets negates the expression.
 
-<RegexCompare texts={["acdefg"]} pattern={""} answerPattern={"[^b]+"}/>
+<RegexCompare texts={["acdefg"]} shouldNotMatchTexts={["abcdefg"]} pattern={""} answerPattern={"[^b]+"}/>
 
 </Wrapper>
 
@@ -100,12 +100,14 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
   - Including tabs and line breaks
 
+<div style={{display: 'flex'}}>
 <RegexCompare
   texts={["these", "are", "some", "words", "snake_case_variable1", "camelCaseVariable1"]}
   pattern={""}
   answerPattern={"\\w+"}
   />
 <RegexCompare texts={["some    spaced       words"]} pattern={""} answerPattern={"[\\w\\s]+"}/>
+</div>
 
 </Wrapper>
 
