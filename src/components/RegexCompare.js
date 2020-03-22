@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export default function RegexCompare({ texts, pattern }) {
+export default function RegexCompare({ texts, pattern = '' }) {
   const inputFocusNotAllowedKeys = new Set([
     'ArrowLeft',
     'ArrowRight',
     'ArrowUp',
-    'ArrowDown'
+    'ArrowDown',
+    ' ' // Space
   ]);
   const inputFocusDisableKeys = new Set(['Escape', 'Tab']);
 
@@ -28,13 +29,15 @@ export default function RegexCompare({ texts, pattern }) {
     var prevEndIndex = 0;
     var res = false;
     while (pattern.length > 0 && pattern !== '()' && (match = re.exec(text))) {
-      console.log(match);
+      if (match.index === re.lastIndex) {
+        re.lastIndex++;
+      }
       highlightedTextContent.push(text.substring(prevEndIndex, match.index));
       prevStartIndex = match.index;
       prevEndIndex = match.index + match[0].length;
       highlightedTextContent.push(
         <span
-          key={match.index}
+          key={`${prevStartIndex}-${prevEndIndex}-${match.index}`}
           style={{ background: '#18B70F', borderRadius: '3px' }}
         >
           {text.substring(prevStartIndex, prevEndIndex)}
@@ -83,7 +86,7 @@ export default function RegexCompare({ texts, pattern }) {
   };
 
   useEffect(() => {
-    UpdateUi('');
+    UpdateUi(pattern);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,7 +111,10 @@ export default function RegexCompare({ texts, pattern }) {
         <br />
         <ul>
           {highlightedTexts.map((ht, i) => (
-            <li key={i}>{ht}</li>
+            <li key={i}>
+              {/* Using pre tag here, since markdown deletes extra spaces */}
+              <Text>{ht}</Text>
+            </li>
           ))}
         </ul>
       </span>
@@ -137,4 +143,9 @@ const Input = styled.input`
   border-radius: 3px;
   padding: 5px;
   margin-right: 16px;
+`;
+
+const Text = styled.pre`
+  font-family: inherit;
+  margin: auto;
 `;

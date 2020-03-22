@@ -34,16 +34,13 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Case sensitivity matters, unless there is a flag specified
 
-- Example:
-  - 
-  - asdads
-<RegexCompare text={"adsa"} pattern={""}/>
+<RegexCompare texts={["qwe"]}/>
 
 </Wrapper>
 
 ---
 
-<RegexCompare text={"adsa"} pattern={"adsa"}/>
+<RegexCompare texts={["adsa", "example"]} pattern={""}/>
 
 ---
 
@@ -72,6 +69,8 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 - You can specify more than a single range inside the braces
   - <CodeColorStyle>[0-9a-fA-F]</CodeColorStyle>
 
+<RegexCompare texts={["gray", "grey"]} pattern={""}/>
+<RegexCompare texts={["0x01f", "0x12a", "0xAef"]} pattern={"[0-9a-fA-F]+"}/>
 </Wrapper>
 
 ---
@@ -82,7 +81,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - <CodeColorStyle>^</CodeColorStyle> character inside the brackets negates the expression.
 
-  - abcd [ac]
+<RegexCompare texts={["acdefg"]} pattern={""}/>
 
 </Wrapper>
 
@@ -105,6 +104,8 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
   - Including tabs and line breaks
 
+<RegexCompare texts={["these", "are", "some", "words", "snake_case_variable1", "camelCaseVariable1"]} pattern={""}/>
+<RegexCompare texts={["some    spaced       words"]} pattern={""}/>
 
 </Wrapper>
 
@@ -135,6 +136,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - <CodeColorStyle>.</CodeColorStyle> will match any character, except line break characters
 
+<RegexCompare texts={["abcd0*     -x="]} pattern={""}/>
 
 </Wrapper>
 
@@ -148,7 +150,6 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 - <CodeColorStyle>$</CodeColorStyle> will mark <i>ending</i> of the search string
 - <CodeColorStyle>\b</CodeColorStyle> will match at <i>word boundaries</i>
 
-
 </Wrapper>
 
 ---
@@ -160,9 +161,9 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 - Or operator for regular expressions
 - Same symbol as in binary or operation in most programming languages (<CodeColorStyle>|</CodeColorStyle>)
 
+<RegexCompare texts={["cat", "dog"]}/>
 
 </Wrapper>
-
 
 ---
 
@@ -177,6 +178,8 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
   - {2}
   - {2, 5}
 
+<RegexCompare texts={["color", "colour"]} pattern={"colo"}/>
+<RegexCompare texts={["aaa", "bbb", "ccc"]}/>
 
 </Wrapper>
 
