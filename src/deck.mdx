@@ -232,6 +232,11 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 </Wrapper>
 
 ---
+<Wrapper>
+<RegexCompare texts={["ab"]} answerPattern={"(\\w+)"} replaceText={""} replaceTextAnswer={"$1"} />
+</Wrapper>
+
+---
 
 <Wrapper>
 
@@ -239,8 +244,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Within a regular expression it is possible to search & use a previously captured value in the same expression
 
-- 
-
+<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(\\w+)\\s*=\\s*\\1\\s*(\\S)\\s(\\w+)"} replaceText={""} replaceTextAnswer={"$1 = $1 $2 $3"} />
 question idea -> Convert x = x + 1 y = y * 5 to x += 1 ...
 
 </Wrapper>

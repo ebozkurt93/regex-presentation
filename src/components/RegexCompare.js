@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { arraysEqual } from '../utils';
 
 export default function RegexCompare({
   texts,
   shouldNotMatchTexts = [],
   pattern = '',
-  answerPattern = null
+  answerPattern = null,
+  replaceText = null,
+  replaceTextAnswer = null
 }) {
   const inputFocusNotAllowedKeys = new Set([
     'ArrowLeft',
@@ -18,16 +21,34 @@ export default function RegexCompare({
   const inputFocusDisableKeys = new Set(['Escape', 'Tab']);
 
   const [currentPattern, setCurrentPattern] = useState(pattern);
+  const [currentReplaceText, setCurrentReplaceText] = useState(replaceText);
+  const [replaceTexts, setReplaceTexts] = useState(texts);
   const [highlightedTexts, setHighlightedTexts] = useState(texts);
   const [
     shouldNotMatchHighlightedTexts,
     setShouldNotMatchHighlightedTexts
   ] = useState(shouldNotMatchTexts);
 
-  const isPatternMatchingText = (text, pattern) => {
+  const isReplaceEnabled = replaceText !== null;
+
+  var [expectedReplaceContent, setExpectedReplaceContent] = useState([]);
+
+  const isValidRegex = pattern => {
     try {
       new RegExp(pattern, 'g');
+      return true;
     } catch (error) {
+      return false;
+    }
+  };
+
+  const getReplaceValue = (text, pattern, replaceText) =>
+    isValidRegex(pattern)
+      ? text.replace(new RegExp(pattern, 'g'), replaceText)
+      : '';
+
+  const isPatternMatchingText = (text, pattern) => {
+    if (!isValidRegex(pattern)) {
       return [false, text];
     }
     var re = new RegExp(pattern, 'g');
@@ -78,9 +99,11 @@ export default function RegexCompare({
   };
 
   const [correctAnswer, setCorrectAnswer] = useState(false);
+  const [correctReplaceText, setCorrectReplaceText] = useState(false);
 
-  const UpdateUi = pattern => {
+  const UpdateUi = (pattern, currentReplaceText) => {
     var result = true;
+    var newReplaceTexts = [];
     texts.forEach((text, i) => {
       const [isCorrectAnswer, highlightedTextContent] = isPatternMatchingText(
         text,
@@ -90,7 +113,20 @@ export default function RegexCompare({
       tempHighlightedTextContent[i] = highlightedTextContent;
       setHighlightedTexts(tempHighlightedTextContent);
       result = result && isCorrectAnswer;
+      if (isReplaceEnabled) {
+        newReplaceTexts.push(
+          getReplaceValue(text, pattern, currentReplaceText)
+        );
+      }
     });
+    if (isReplaceEnabled) {
+      setReplaceTexts(newReplaceTexts);
+    }
+    setCorrectReplaceText(
+      currentPattern.length > 0 &&
+        currentReplaceText.length > 0 &&
+        arraysEqual(newReplaceTexts, expectedReplaceContent)
+    );
     shouldNotMatchTexts.forEach((text, i) => {
       const [isCorrectAnswer, highlightedTextContent] = isPatternMatchingText(
         text,
@@ -104,8 +140,19 @@ export default function RegexCompare({
     setCorrectAnswer(result);
   };
 
+  const calculateReplaceContent = (texts, pattern, replaceText) => {
+    var results = [];
+    texts.forEach(text =>
+      results.push(getReplaceValue(text, pattern, replaceText))
+    );
+    return results;
+  };
+
   useEffect(() => {
-    UpdateUi(pattern);
+    setExpectedReplaceContent(
+      calculateReplaceContent(texts, answerPattern, replaceTextAnswer)
+    );
+    UpdateUi(pattern, currentReplaceText);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -119,8 +166,13 @@ export default function RegexCompare({
   };
 
   const handleChange = e => {
-    setCurrentPattern(e.target.value);
-    UpdateUi(e.target.value);
+    if (e.target.name === 'pattern') {
+      setCurrentPattern(e.target.value);
+      UpdateUi(e.target.value, currentReplaceText);
+    } else {
+      setCurrentReplaceText(e.target.value);
+      UpdateUi(currentPattern, e.target.value);
+    }
   };
 
   const hasUnmatchedTexts = shouldNotMatchHighlightedTexts.length > 0;
@@ -178,7 +230,7 @@ export default function RegexCompare({
           <span
             onClick={() => {
               setCurrentPattern(pattern);
-              UpdateUi(pattern);
+              UpdateUi(pattern, currentReplaceText);
             }}
             style={{ cursor: 'pointer', marginLeft: '20px' }}
           >
@@ -191,7 +243,7 @@ export default function RegexCompare({
             <span
               onClick={() => {
                 setCurrentPattern(answerPattern);
-                UpdateUi(answerPattern);
+                UpdateUi(answerPattern, currentReplaceText);
               }}
               style={{ cursor: 'pointer' }}
             >
@@ -200,6 +252,61 @@ export default function RegexCompare({
           </span>
         )}
       </div>
+      {isReplaceEnabled && (
+        <div style={{ marginTop: '20px' }}>
+          <div>
+            <Input
+              type="text"
+              name="replaceText"
+              onKeyDown={handleKeyDown}
+              onChange={handleChange}
+              value={currentReplaceText}
+              placeholder="Replace text"
+            />
+            {correctReplaceText ? '✅' : '❌'}
+            {
+              <span
+                onClick={() => {
+                  setCurrentReplaceText(replaceText);
+                  UpdateUi(pattern, replaceText);
+                }}
+                style={{ cursor: 'pointer', marginLeft: '20px' }}
+              >
+                🔄
+              </span>
+            }
+            {replaceTextAnswer && (
+              <span>
+                &nbsp;
+                <span
+                  onClick={() => {
+                    setCurrentReplaceText(replaceTextAnswer);
+                    UpdateUi(pattern, replaceTextAnswer);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  ❓
+                </span>
+              </span>
+            )}
+          </div>
+          {currentPattern.length > 0 && currentReplaceText.length > 0 && (
+            <div>
+              <br />
+              Replaced values:
+              <br />
+              <ul>
+                {replaceTexts &&
+                  replaceTexts.map((rt, i) => (
+                    <li key={i}>
+                      <Text>{rt}</Text>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </Wrapper>
   );
 }
@@ -208,7 +315,9 @@ RegexCompare.propTypes = {
   texts: PropTypes.arrayOf(PropTypes.string).isRequired,
   shouldNotMatchTexts: PropTypes.arrayOf(PropTypes.string),
   pattern: PropTypes.string,
-  answerPattern: PropTypes.string
+  answerPattern: PropTypes.string,
+  replaceText: PropTypes.string,
+  replaceTextAnswer: PropTypes.string
 };
 
 const Wrapper = styled.div`
