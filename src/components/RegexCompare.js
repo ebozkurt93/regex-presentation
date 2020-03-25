@@ -101,7 +101,7 @@ export default function RegexCompare({
   const [correctAnswer, setCorrectAnswer] = useState(false);
   const [correctReplaceText, setCorrectReplaceText] = useState(false);
 
-  const UpdateUi = (pattern, currentReplaceText) => {
+  const updateUi = (pattern, currentReplaceText) => {
     var result = true;
     var newReplaceTexts = [];
     texts.forEach((text, i) => {
@@ -152,7 +152,7 @@ export default function RegexCompare({
     setExpectedReplaceContent(
       calculateReplaceContent(texts, answerPattern, replaceTextAnswer)
     );
-    UpdateUi(pattern, currentReplaceText);
+    updateUi(pattern, currentReplaceText);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -168,10 +168,10 @@ export default function RegexCompare({
   const handleChange = e => {
     if (e.target.name === 'pattern') {
       setCurrentPattern(e.target.value);
-      UpdateUi(e.target.value, currentReplaceText);
+      updateUi(e.target.value, currentReplaceText);
     } else {
       setCurrentReplaceText(e.target.value);
-      UpdateUi(currentPattern, e.target.value);
+      updateUi(currentPattern, e.target.value);
     }
   };
 
@@ -230,7 +230,7 @@ export default function RegexCompare({
           <span
             onClick={() => {
               setCurrentPattern(pattern);
-              UpdateUi(pattern, currentReplaceText);
+              updateUi(pattern, currentReplaceText);
             }}
             style={{ cursor: 'pointer', marginLeft: '20px' }}
           >
@@ -243,7 +243,7 @@ export default function RegexCompare({
             <span
               onClick={() => {
                 setCurrentPattern(answerPattern);
-                UpdateUi(answerPattern, currentReplaceText);
+                updateUi(answerPattern, currentReplaceText);
               }}
               style={{ cursor: 'pointer' }}
             >
@@ -268,7 +268,7 @@ export default function RegexCompare({
               <span
                 onClick={() => {
                   setCurrentReplaceText(replaceText);
-                  UpdateUi(currentPattern, replaceText);
+                  updateUi(currentPattern, replaceText);
                 }}
                 style={{ cursor: 'pointer', marginLeft: '20px' }}
               >
@@ -281,7 +281,7 @@ export default function RegexCompare({
                 <span
                   onClick={() => {
                     setCurrentReplaceText(replaceTextAnswer);
-                    UpdateUi(currentPattern, replaceTextAnswer);
+                    updateUi(currentPattern, replaceTextAnswer);
                   }}
                   style={{ cursor: 'pointer' }}
                 >
