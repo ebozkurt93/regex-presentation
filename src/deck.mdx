@@ -6,6 +6,10 @@ import {CodeColorStyle} from './components/Styles'
 
 export const theme = myTheme
 
+<Head>
+  <title>Regular Expressions</title>
+</Head>
+
 # Regular Expressions
 
 ---
@@ -34,7 +38,9 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Case sensitivity matters, unless there is a flag specified
 
+
 <RegexCompare texts={["qwe"]} answerPattern={"qwe"}/>
+
 
 </Wrapper>
 
@@ -58,7 +64,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 ## Character classes/sets
 
-- Any character inside the braces will match
+- Any character inside the square brackets <CodeColorStyle>[]</CodeColorStyle> will match
   - <CodeColorStyle>[ae]</CodeColorStyle> gray grey
 - To specify a range of characters, use hyphen character (<CodeColorStyle>-</CodeColorStyle>)
   - <CodeColorStyle>[0-9]</CodeColorStyle> will match any single digit between 0 and 9
@@ -232,8 +238,13 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 </Wrapper>
 
 ---
+
 <Wrapper>
-<RegexCompare texts={["ab"]} answerPattern={"(\\w+)"} replaceText={""} replaceTextAnswer={"$1"} />
+
+- Example: Add 'a' to start and end of the word
+
+<RegexCompare texts={["ab", "asd", "zxc"]} answerPattern={"(\\w+)"} replaceText={""} replaceTextAnswer={"a$1a"} />
+
 </Wrapper>
 
 ---
@@ -244,8 +255,9 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Within a regular expression it is possible to search & use a previously captured value in the same expression
 
-<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(\\w+)\\s*=\\s*\\1\\s*(\\S)\\s(\\w+)"} replaceText={""} replaceTextAnswer={"$1 = $1 $2 $3"} />
-question idea -> Convert x = x + 1 y = y * 5 to x += 1 ...
+- Example: Reformat code (convert x = x + 1 to x += 1, also clear unnecessary empty spaces etc)
+
+<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(\\w+)\\s*=\\s*\\1\\s*(\\S)+\\s*(\\w+)"} replaceText={""} replaceTextAnswer={"$1 = $1 $2 $3"} />
 
 </Wrapper>
 
@@ -260,6 +272,7 @@ question idea -> Convert x = x + 1 y = y * 5 to x += 1 ...
 - To name a group add <CodeColorStyle>?<groupName\></CodeColorStyle> at the beginning of the capture group.
   - (?<myGroup\>[abc]+)
 - To backreference the group syntax is like <CodeColorStyle>\k<groupName\></CodeColorStyle>
+  - Exact syntax changes depending on the programming language
 
 </Wrapper>
 
@@ -267,30 +280,90 @@ question idea -> Convert x = x + 1 y = y * 5 to x += 1 ...
 
 <Wrapper>
 
-## Lookaround groups (Lookahead & Lookbehind)
+- Same as previous example, but use named capture groups
 
+<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(?<var>\\w+)\\s*=\\s*\\k<var>\\s*(?<symbol>\\S)\\s*(?<value>\\w+)"} replaceText={""} replaceTextAnswer={"$<var> = $<var> $<symbol> $<value>"} />
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+- Example: Format all mail addresses to end with '@example.com'
+
+<RegexCompare texts={["mail@example.com", "test-1+123@aexmple.com", "some_name@examplle.com"]} answerPattern={"^([\\w+-]+)@.*"} replaceText={""} replaceTextAnswer={"$1@example.com"} />
+
+</Wrapper>
+
+---
+
+
+<Wrapper>
+
+## Lookaround groups (Lookahead & Lookbehind)
 
 - There are 2 types of lookahead:
   - Positive lookahead: Match a token which continues with another token
     - u(?=c)
-    duck dump
-    Lookahead lookbehind
   - Negative lookahead: Match a token which does not continue with another token
     - a(?!d)
-    Lookahead
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+
+- Positive lookahead example:
+
+<RegexCompare texts={["duck"]} shouldNotMatchTexts={["dunk"]} answerPattern={"du(?=c)ck"} />
+
+- Negative lookahead example:
+
+<RegexCompare texts={["duck"]} shouldNotMatchTexts={["dunk"]} answerPattern={"du(?!n)\\wk"} />
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Lookaround groups (Lookahead & Lookbehind) (2)
+
 - There are 2 types of lookbehind:
   - Positive lookbehind: Match a token which begins with another token
     - (?<=a)b
   - Negative lookbehind: Match a token which does not begin with another token
     - (?<!a)b
+
+
 - While using lookahead and lookbehind content inside the lookahead/lookbehind will be discarded.
   - If you want to store the match for the lookahead/lookbehind, you can use a capture group
-
 
 </Wrapper>
 
 ---
-add regex flags
+
+<Wrapper>
+
+
+- Positive lookbehind example:
+
+<RegexCompare texts={["ball"]} shouldNotMatchTexts={["fall"]} answerPattern={"\\w(?<=b)all"} />
+
+- Negative lookbehind example:
+
+<RegexCompare texts={["ball"]} shouldNotMatchTexts={["fall"]} answerPattern={"\\w(?<!f)all"} />
+
+</Wrapper>
+
+---
+TODO - Things to add
+- regex flags
+- mention different flavors & engines
+- add flavor converter script
 
 ---
 
@@ -300,3 +373,5 @@ add regex flags
 - <StyledLink link="https://regex101.com"/>
 - <StyledLink link="https://regexr.com"/>
 - <StyledLink link="https://www.debuggex.com"/>
+- <StyledLink link="https://github.com/Varunram/Awesome-Regex-Resources"/>
+- <StyledLink link="https://regexcrossword.com"/>

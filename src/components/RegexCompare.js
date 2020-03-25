@@ -223,7 +223,7 @@ export default function RegexCompare({
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           value={currentPattern}
-          placeholder="pattern"
+          placeholder="Pattern"
         />
         {correctAnswer ? '✅' : '❌'}
         {
@@ -253,8 +253,14 @@ export default function RegexCompare({
         )}
       </div>
       {isReplaceEnabled && (
-        <div style={{ marginTop: '20px' }}>
-          <div>
+        <ReplaceDiv>
+          <div
+            style={
+              hasUnmatchedTexts
+                ? { display: 'flex', justifyContent: 'center' }
+                : {}
+            }
+          >
             <Input
               type="text"
               name="replaceText"
@@ -305,7 +311,7 @@ export default function RegexCompare({
               </ul>
             </div>
           )}
-        </div>
+        </ReplaceDiv>
       )}
     </Wrapper>
   );
@@ -333,10 +339,15 @@ const Input = styled.input`
   border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 3px;
   padding: 5px;
+  min-width: 500px;
   margin-right: 16px;
 `;
 
 const Text = styled.pre`
   font-family: inherit;
   margin: auto;
+`;
+
+const ReplaceDiv = styled.div`
+  margin-top: 20px;
 `;
