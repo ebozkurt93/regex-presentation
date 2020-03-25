@@ -121,12 +121,12 @@ export default function RegexCompare({
     });
     if (isReplaceEnabled) {
       setReplaceTexts(newReplaceTexts);
+      setCorrectReplaceText(
+        currentPattern.length > 0 &&
+          currentReplaceText.length > 0 &&
+          arraysEqual(newReplaceTexts, expectedReplaceContent)
+      );
     }
-    setCorrectReplaceText(
-      currentPattern.length > 0 &&
-        currentReplaceText.length > 0 &&
-        arraysEqual(newReplaceTexts, expectedReplaceContent)
-    );
     shouldNotMatchTexts.forEach((text, i) => {
       const [isCorrectAnswer, highlightedTextContent] = isPatternMatchingText(
         text,
@@ -268,7 +268,7 @@ export default function RegexCompare({
               <span
                 onClick={() => {
                   setCurrentReplaceText(replaceText);
-                  UpdateUi(pattern, replaceText);
+                  UpdateUi(currentPattern, replaceText);
                 }}
                 style={{ cursor: 'pointer', marginLeft: '20px' }}
               >
@@ -281,7 +281,7 @@ export default function RegexCompare({
                 <span
                   onClick={() => {
                     setCurrentReplaceText(replaceTextAnswer);
-                    UpdateUi(pattern, replaceTextAnswer);
+                    UpdateUi(currentPattern, replaceTextAnswer);
                   }}
                   style={{ cursor: 'pointer' }}
                 >
