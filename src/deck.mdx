@@ -255,9 +255,15 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Within a regular expression it is possible to search & use a previously captured value in the same expression
 
+</Wrapper>
+
+---
+
+<Wrapper>
+
 - Example: Reformat code (convert x = x + 1 to x += 1, also clear unnecessary empty spaces etc)
 
-<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(\\w+)\\s*=\\s*\\1\\s*(\\S)+\\s*(\\w+)"} replaceText={""} replaceTextAnswer={"$1 = $1 $2 $3"} />
+<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(\\w+)\\s*=\\s*\\1\\s*(\\S)+\\s*(\\w+)"} replaceText={""} replaceTextAnswer={"$1 $2= $3"} />
 
 </Wrapper>
 
@@ -282,7 +288,7 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 - Same as previous example, but use named capture groups
 
-<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(?<var>\\w+)\\s*=\\s*\\k<var>\\s*(?<symbol>\\S)\\s*(?<value>\\w+)"} replaceText={""} replaceTextAnswer={"$<var> = $<var> $<symbol> $<value>"} />
+<RegexCompare texts={["x  = x + 1", "x = x + 10", "abc =   abc *    10"]} shouldNotMatchTexts={["x = y + 1"]} answerPattern={"(?<var>\\w+)\\s*=\\s*\\k<var>\\s*(?<symbol>\\S)\\s*(?<value>\\w+)"} replaceText={""} replaceTextAnswer={"$<var> $<symbol>= $<value>"} />
 
 </Wrapper>
 
@@ -298,6 +304,25 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 
 ---
 
+<Wrapper>
+
+- Example: Convert all file types to png
+
+<RegexCompare texts={["image.example.png", "img1.jpeg", "updated.image132.bmp"]} answerPattern={"(.*)\\.(\\w+)$"} replaceText={""} replaceTextAnswer={"$1.png"} />
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+- Example: Convert all url's with http to https
+
+<RegexCompare texts={["http://example-http.com", "https://example.com", "http://http.example.com"]} answerPattern={"^(https?)(.*)"} replaceText={""} replaceTextAnswer={"https$2"} />
+
+</Wrapper>
+
+---
 
 <Wrapper>
 
@@ -360,10 +385,49 @@ A regular expression, regex or regexp (sometimes called a rational expression) i
 </Wrapper>
 
 ---
-TODO - Things to add
-- regex flags
-- mention different flavors & engines
-- add flavor converter script
+
+<Wrapper>
+
+## Regex flags
+
+Some of the common flags:
+
+- <CodeColorStyle>/g</CodeColorStyle> global flag
+
+  - Do not return after first match
+
+- <CodeColorStyle>/m</CodeColorStyle> multiline flag
+
+  - ^ and $ match at the start/end of each line
+
+- <CodeColorStyle>/i</CodeColorStyle> insensitive flag
+
+  - Case insensitive match
+
+- <CodeColorStyle>/U</CodeColorStyle> ungreedy flag
+
+  - Makes quantifiers lazy
+
+- <CodeColorStyle>/u</CodeColorStyle> unicode flag
+
+</Wrapper>
+
+---
+
+<Wrapper>
+
+## Different regex flavors & engines
+
+- Some parts of the syntax changes depending on the regex flavor
+  - For example named capture group syntax changes between Python & Javascript
+
+- Some of the flavors:
+  - Perl
+  - PCRE (Perl Compatible Regular Expressions) / PCRE2
+  - Python
+  - Javascript
+
+</Wrapper>
 
 ---
 
